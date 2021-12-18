@@ -1,6 +1,5 @@
 #include <bits/stdc++.h>
 using namespace std;
-// test
 //下面定义保留，为简化程序，使用字符指针数组保存所有保留字。
 //如果想增加保留字，可继续添加，并修改保留字数目
 #define keywordSum 8
