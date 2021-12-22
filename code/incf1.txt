@@ -1,7 +1,0 @@
-{
-int a;
-a=7;
-int maxlengthmaxlengthmaxlengthmaxlengthmaxlength;
-maxlengthmaxlengthmaxlengthmaxlengthmaxlength=a*3;
-write maxlengthmaxlengthmaxlengthmaxlengthmaxlength;
-}

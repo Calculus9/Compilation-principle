@@ -15,7 +15,7 @@ string singleword = "+-*(){};,:";
 string doubleword = "><=!";
 
 string openFilename;
-const char *outputFilename = "../Lexical_output.txt";
+const char *outputFilename = "./Lexical_output.txt";
 
 int getHash(string &s)
 {
