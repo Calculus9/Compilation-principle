@@ -1,35 +1,37 @@
 {	{
-ID	inti
-,	,
-ID	sum
+ID	inta
 ;	;
-ID	sum
-=	=
-NUM	1
+ID	int5b
 ;	;
+for	for
+(	(
 i	i
 =	=
 NUM	1
 ;	;
-do	do
-{	{
-ID	sum
-=	=
-ID	sum
-*	*
 i	i
+<	<
+a	a
 ;	;
 i	i
 =	=
 i	i
 +	+
 NUM	1
+)	)
+NUM	5
+ID	b
+=	=
+NUM	5
+ID	b
++	+
+i	i
+;	;
+write	write
+ERROR	"	错误: 第1行
+ID	inputerror
+!	!
+ERROR	"	错误: 第1行
 ;	;
 }	}
-while	while
-(	(
-i	i
-<=	<=
-NUM	10
-)	)
-ERROR	注释未完成	错误: 第1行
+end
