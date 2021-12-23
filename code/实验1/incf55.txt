@@ -8,17 +8,17 @@ ID	b
 ;	;
 for	for
 (	(
-i	i
+ID	i
 =	=
 NUM	1
 ;	;
-i	i
+ID	i
 <	<
 ID	a
 ;	;
-i	i
+ID	i
 =	=
-i	i
+ID	i
 +	+
 NUM	1
 )	)
@@ -28,12 +28,12 @@ ID	b
 NUM	5
 ID	b
 +	+
-i	i
+ID	i
 ;	;
 write	write
 ERROR	"	错误: 第5行
-input	input
-error	error
+ID	input
+ID	error
 !	!
 ERROR	"	错误: 第5行
 ;	;
