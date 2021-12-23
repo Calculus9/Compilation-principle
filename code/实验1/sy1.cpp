@@ -18,10 +18,10 @@ int main()
     char ch, token[40]; //ch为每次读入的字符，token用于保存识别出的单词
     int es = 0, j, n;   //es错误代码，0表示没有错误。j,n为临时变量，控制组合单词时的下标等
     int line = 1;       //当前所在行
-    printf("请输入源程序文件名（包括路径）：");
+    printf("请输入源程序文件名（包括路径）: ");
     // cin >> Scanin;
     // cout<<Scanin<<endl;
-    printf("请输入词法分析输出文件名（包括路径）：");
+    printf("请输入词法分析输出文件名（包括路径）: ");
     // cin >> Scanout;
     if ((fileopen = fopen("../incf5.txt", "r")) == NULL) //判断输入文件名是否正确
     {
@@ -128,7 +128,7 @@ int main()
             token[1] = '\0';
             ch = getc(fileopen);                                     //读下一个符号以便识别下一个单词
             es = 3;                                                  //设置错误代码
-            fprintf(filedown, "%s\t%s\t错误：第%d行\n", "ERROR", token, line); //输出错误符号
+            fprintf(filedown, "%s\t%s\t错误: 第%d行\n", "ERROR", token, line); //输出错误符号
         }
     }
     fprintf(filedown, "%s\n", "end");
