@@ -1,0 +1,41 @@
+{	{
+int	int
+ID	a
+;	;
+int	int
+NUM	5
+ID	b
+;	;
+for	for
+(	(
+ID	i
+=	=
+NUM	1
+;	;
+ID	i
+<	<
+ID	a
+;	;
+ID	i
+=	=
+ID	i
++	+
+NUM	1
+)	)
+NUM	5
+ID	b
+=	=
+NUM	5
+ID	b
++	+
+ID	i
+;	;
+write	write
+ERROR	"	错误: 第5行
+ID	input
+ID	error
+!	!
+ERROR	"	错误: 第5行
+;	;
+}	}
+end

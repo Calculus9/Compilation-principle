@@ -68,25 +68,25 @@ int lexicalAnalysis()
         cout << "\n创建词法分析输出文件出错!" << endl;
         return (2); //输出文件出错返回错误代码2
     }
-    fin >> ch;
+    fin.get(ch);
     while (!fin.eof())
     {
         while (ch == '\n')
-            fin >> ch, line++;
+            fin.get(ch), line++;
         while (ch == ' ' || ch == '\t')
-            fin >> ch;
+            fin.get(ch);
         if (ch == EOF)
             break;
         token = "";
         if (isalpha(ch)) //如果是字母，则进行标识符处理
         {
             token += ch;
-            fin >> ch; //继续输入字符
+            fin.get(ch); //继续输入字符
             //如果是字母数字则组合标识符；如果不是则标识符组合结束
             while (isalnum(ch))
             {
                 token += ch; //组合存放到token中
-                fin >> ch;   //读下一个字符
+                fin.get(ch);   //读下一个字符
             }
             //查保留字
             if (!isKeyword[getHash(token)]) //不是保留字，输出标识符
@@ -97,38 +97,38 @@ int lexicalAnalysis()
         else if (isdigit(ch)) //数字处理
         {
             token += ch;
-            fin >> ch;          //读下一个字符
+            fin.get(ch);          //读下一个字符
             while (isdigit(ch)) //如果是数字则组合整数；如果不是则整数组合结束
             {
                 token += ch; //组合整数保留到token中
-                fin >> ch;   //读下一个字符
+                fin.get(ch);   //读下一个字符
             }
             fout << "NUM\t" << token << endl; //输出整数符号
         }
         else if (singleword.find(ch) != string::npos) //单分符处理
         {
             token += ch;
-            fin >> ch;                              //读下一个符号以便识别下一个单词
+            fin.get(ch);                              //读下一个符号以便识别下一个单词
             fout << token << "\t" << token << endl; //输出单分界符符号
         }
         else if (doubleword.find(ch) != string::npos) //双分界符处理
         {
             token += ch;
-            fin >> ch;     //读下一个字符判断是否为双分界符
+            fin.get(ch);     //读下一个字符判断是否为双分界符
             if (ch == '=') //如果是=，组合双分界符
             {
                 token += ch;
-                fin >> ch; //读下一个符号以便识别下一个单词
+                fin.get(ch); //读下一个符号以便识别下一个单词
             }
             fout << token << "\t" << token << endl; //输出单或双分界符符号
         }
         else if (ch == '/') //注释处理
         {
-            fin >> ch;     //读下一个字符
+            fin.get(ch);     //读下一个字符
             if (ch == '*') //如果是*，则开始处理注释
             {
                 char ch1;
-                fin >> ch1; //读下一个字符
+                fin.get(ch1); //读下一个字符
                 do
                 {
                     ch = ch1; //删除注释
@@ -139,9 +139,9 @@ int lexicalAnalysis()
                              << "\t错误: 第" << line << "行" << endl; //输出错误符号
                         return (4);
                     }
-                    fin >> ch1;
+                    fin.get(ch1);
                 } while ((ch != '*' || ch1 != '/') && ch1 != EOF); //直到遇到注释结束符*/或文件尾
-                fin >> ch;                                         //读下一个符号以便识别下一个单词
+                fin.get(ch);                                         //读下一个符号以便识别下一个单词
             }
             else //不是*则处理单分界符/
             {
@@ -152,7 +152,7 @@ int lexicalAnalysis()
         else
         { //错误处理
             token += ch;
-            fin >> ch;                                                          //读下一个符号以便识别下一个单词
+            fin.get(ch);                                                          //读下一个符号以便识别下一个单词
             es = 3;                                                             //设置错误代码
             fout << "ERROR\t" << token << "\t错误: 第" << line << "行" << endl; //输出错误符号
         }
