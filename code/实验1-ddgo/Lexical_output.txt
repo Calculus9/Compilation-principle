@@ -1,0 +1,13 @@
+{	{
+ID	intabc
+;	;
+ID	int123
+;	;
+ID	inta
+ERROR	$	错误: 第1行
+ERROR	@	错误: 第1行
+;	;
+ID	int2a
+;	;
+}	}
+end
