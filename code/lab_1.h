@@ -91,12 +91,8 @@ int lexicalAnalysis()
     {
         if (fin.eof())
             break;
-        while (ch == '\n') {
-            fin.get(ch), line++;
-            if (fin.eof())
-                break;
-        }
-        while (ch == ' ' || ch == '\t') {
+        while (ch == '\n' || ch == ' ' || ch == '\t') {
+            if(ch == '\n') line++;
             fin.get(ch);
             if (fin.eof())
                 break;
@@ -159,6 +155,7 @@ int lexicalAnalysis()
                     if (fin.eof())
                     {
                         fout << "ERROR\t"
+                             << "×¢ÊÍÎ´ÍêÈ«"
                              << "\t´íÎó: µÚ" << line << "ÐÐ" << endl; //Êä³ö´íÎó·ûºÅ
                         return (4);
                     }
