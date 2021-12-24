@@ -1,0 +1,6 @@
+{
+int 123;
+int A$@;
+int 2a;
+int a2;
+}

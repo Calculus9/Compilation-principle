@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 {	{
 int	int
 ID	a
@@ -39,3 +40,46 @@ ERROR	"	´íÎó: µÚ5ĞĞ
 ;	;
 }	}
 end
+=======
+{	{
+int	int
+ID	a
+;	;
+int	int
+NUM	5
+ID	b
+;	;
+for	for
+(	(
+ID	i
+=	=
+NUM	1
+;	;
+ID	i
+<	<
+ID	a
+;	;
+ID	i
+=	=
+ID	i
++	+
+NUM	1
+)	)
+NUM	5
+ID	b
+=	=
+NUM	5
+ID	b
++	+
+ID	i
+;	;
+write	write
+"	"
+ID	input
+ID	error
+!	!
+"	"
+;	;
+}	}
+end
+>>>>>>> feat/lab1

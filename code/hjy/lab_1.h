@@ -87,7 +87,8 @@ int lexicalAnalysis()
 
     cout << "请输入源程序文件名（包括路径）: ";
     cin >> openFilename;
-    const char *copenFilename = openFilename.c_str(); //可读不可改的常指针
+    string tmp = "./test/" + openFilename;
+    const char *copenFilename = tmp.c_str(); //可读不可改的常指针
 
     //判断输入文件名是否正确
     ifstream fin(copenFilename); //输入，从硬盘到内存
@@ -105,10 +106,6 @@ int lexicalAnalysis()
     fin.get(ch);
     while (!fin.eof())
     {
-<<<<<<< HEAD
-        while (ch == '\n' || ch == ' ' || ch == '\t') {
-            if(ch == '\n') line++;
-=======
         if (fin.eof())
             break;
         while (ch == '\n' || ch == ' ' || ch == '\t')
@@ -116,12 +113,9 @@ int lexicalAnalysis()
             if (ch == '\n')
                 line++;
             fin.get(ch);
->>>>>>> feat/lab1
             if (fin.eof())
                 break;
-            fin.get(ch);
         }
-        if(fin.eof()) break;
         token = "";
         if (isalpha(ch)) //如果是字母，则进行标识符处理
         {
