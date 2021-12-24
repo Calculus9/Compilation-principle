@@ -9,7 +9,7 @@ unsigned long long isKeyword[mod];
 int base = 131;
 
 //下面定义纯单分界符，添加%
-string singleword = "+-*(){};,:%";
+string singleword = "+-*(){};,/%\"";
 
 //下面定义双分界符的首字符
 string doubleword = "><=!";
@@ -17,25 +17,31 @@ string doubleword = "><=!";
 string openFilename;
 const char *outputFilename = "./Lexical_output.txt";
 
-unsigned long long getHash(string &s) {
+unsigned long long getHash(string &s)
+{
     unsigned long long hashsum = 0;
     for (int i = 0; i < (int)s.size(); i++)
         hashsum = (hashsum * base + s[i] - 'a' + 1);
     return hashsum;
 }
 
-void insert(unsigned long long x) {
+void insert(unsigned long long x)
+{
     int p = x % mod;
-    while(isKeyword[p] != -1) {
+    while (isKeyword[p] != -1)
+    {
         p = (p + 1) % mod;
     }
     isKeyword[p] = x;
 }
 
-bool find(unsigned long long x) {
+bool find(unsigned long long x)
+{
     int p = x % mod;
-    while(isKeyword[p] != -1) {
-        if(isKeyword[p] == x) {
+    while (isKeyword[p] != -1)
+    {
+        if (isKeyword[p] == x)
+        {
             return true;
         }
         p = (p + 1) % mod;
@@ -48,11 +54,21 @@ bool find(unsigned long long x) {
  */
 void init()
 {
-    memset(isKeyword,-1,sizeof(isKeyword));
-    for (int i = 0; i < keywordSum; i++) {
+    memset(isKeyword, -1, sizeof(isKeyword));
+    for (int i = 0; i < keywordSum; i++)
+    {
         insert(getHash(keyword[i]));
     }
 }
+
+int judge_length(string s)
+{
+    if (s.size() > 39)
+        return 1;
+    else
+        return 0;
+}
+
 /**
  * @brief 词法分析函数
  * @return int 返回值
@@ -71,7 +87,8 @@ int lexicalAnalysis()
 
     cout << "请输入源程序文件名（包括路径）: ";
     cin >> openFilename;
-    const char *copenFilename = openFilename.c_str(); //可读不可改的常指针
+    string tmp = "./test/" + openFilename;
+    const char *copenFilename = tmp.c_str(); //可读不可改的常指针
 
     //判断输入文件名是否正确
     ifstream fin(copenFilename); //输入，从硬盘到内存
@@ -91,8 +108,10 @@ int lexicalAnalysis()
     {
         if (fin.eof())
             break;
-        while (ch == '\n' || ch == ' ' || ch == '\t') {
-            if(ch == '\n') line++;
+        while (ch == '\n' || ch == ' ' || ch == '\t')
+        {
+            if (ch == '\n')
+                line++;
             fin.get(ch);
             if (fin.eof())
                 break;
@@ -106,7 +125,14 @@ int lexicalAnalysis()
             while (isalnum(ch))
             {
                 token += ch; //组合存放到token中
-                fin.get(ch);   //读下一个字符
+                fin.get(ch); //读下一个字符
+            }
+            if (judge_length(token))
+            {
+                string token1 = token.substr(0, 39);
+                token = token.substr(39);
+                cout << "第" << line << "行标识符越界，已去掉" << token1 << "，剩余字符:" << token << endl;
+                fout << "标识符越界，已截取，当前ID为" << token << endl;
             }
             //查保留字
             if (!find(getHash(token))) //不是保留字，输出标识符
@@ -117,24 +143,24 @@ int lexicalAnalysis()
         else if (isdigit(ch)) //数字处理
         {
             token += ch;
-            fin.get(ch);          //读下一个字符
+            fin.get(ch);        //读下一个字符
             while (isdigit(ch)) //如果是数字则组合整数；如果不是则整数组合结束
             {
                 token += ch; //组合整数保留到token中
-                fin.get(ch);   //读下一个字符
+                fin.get(ch); //读下一个字符
             }
             fout << "NUM\t" << token << endl; //输出整数符号
         }
         else if (singleword.find(ch) != string::npos) //单分符处理
         {
             token += ch;
-            fin.get(ch);                              //读下一个符号以便识别下一个单词
+            fin.get(ch);                            //读下一个符号以便识别下一个单词
             fout << token << "\t" << token << endl; //输出单分界符符号
         }
         else if (doubleword.find(ch) != string::npos) //双分界符处理
         {
             token += ch;
-            fin.get(ch);     //读下一个字符判断是否为双分界符
+            fin.get(ch);   //读下一个字符判断是否为双分界符
             if (ch == '=') //如果是=，组合双分界符
             {
                 token += ch;
@@ -144,7 +170,7 @@ int lexicalAnalysis()
         }
         else if (ch == '/') //注释处理
         {
-            fin.get(ch);     //读下一个字符
+            fin.get(ch);   //读下一个字符
             if (ch == '*') //如果是*，则开始处理注释
             {
                 char ch1;
@@ -154,6 +180,9 @@ int lexicalAnalysis()
                     ch = ch1; //删除注释
                     if (fin.eof())
                     {
+                        cout << "ERROR\t"
+                             << "注释未完全"
+                             << "\t错误: 第" << line << "行" << endl; //输出错误符号
                         fout << "ERROR\t"
                              << "注释未完全"
                              << "\t错误: 第" << line << "行" << endl; //输出错误符号
@@ -161,7 +190,7 @@ int lexicalAnalysis()
                     }
                     fin.get(ch1);
                 } while ((ch != '*' || ch1 != '/') && ch1 != EOF); //直到遇到注释结束符*/或文件尾
-                fin.get(ch);                                         //读下一个符号以便识别下一个单词
+                fin.get(ch);                                       //读下一个符号以便识别下一个单词
             }
             else //不是*则处理单分界符/
             {
@@ -172,9 +201,10 @@ int lexicalAnalysis()
         else
         { //错误处理
             token += ch;
-            fin.get(ch);                                                          //读下一个符号以便识别下一个单词
+            fin.get(ch);                                                        //读下一个符号以便识别下一个单词
             es = 3;                                                             //设置错误代码
             fout << "ERROR\t" << token << "\t错误: 第" << line << "行" << endl; //输出错误符号
+            cout << "ERROR\t" << token << "\t错误: 第" << line << "行" << endl; //输出错误符号
         }
     }
     fout << "end" << endl;
