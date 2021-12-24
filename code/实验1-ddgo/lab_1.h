@@ -3,9 +3,9 @@ using namespace std;
 
 // 保存所有保留字
 #define keywordSum 8
-#define mod (keywordSum + keywordSum)
+#define mod (13)
 string keyword[keywordSum] = {"if", "else", "for", "while", "do", "int", "read", "write"};
-bool isKeyword[mod];
+unsigned long long isKeyword[mod];
 int base = 131;
 
 //下面定义纯单分界符，如需要可添加
@@ -17,22 +17,40 @@ string doubleword = "><=!";
 string openFilename;
 const char *outputFilename = "./Lexical_output.txt";
 
-int getHash(string &s)
-{
-    int hashsum = 0;
+unsigned long long getHash(string &s) {
+    unsigned long long hashsum = 0;
     for (int i = 0; i < (int)s.size(); i++)
-        hashsum = (hashsum * base % mod + s[i] - 'a' + 1) % mod;
+        hashsum = (hashsum * base + s[i] - 'a' + 1);
     return hashsum;
 }
+
+void insert(unsigned long long x) {
+    int p = x % mod;
+    while(isKeyword[p] != -1) {
+        p = (p + 1) % mod;
+    }
+    isKeyword[p] = x;
+}
+
+bool find(unsigned long long x) {
+    int p = x % mod;
+    while(isKeyword[p] != -1) {
+        if(isKeyword[p] == x) {
+            return true;
+        }
+        p = (p + 1) % mod;
+    }
+    return false;
+}
+
 /**
  * @brief 初始化保留关键字的hash值
  */
 void init()
 {
-    for (int i = 0; i < keywordSum; i++)
-    {
-        isKeyword[getHash(keyword[i])] = true;
-        cout << keyword[i] << " " << getHash(keyword[i]) << endl;
+    memset(isKeyword,-1,sizeof(isKeyword));
+    for (int i = 0; i < keywordSum; i++) {
+        insert(getHash(keyword[i]));
     }
 }
 /**
@@ -71,12 +89,18 @@ int lexicalAnalysis()
     fin.get(ch);
     while (!fin.eof())
     {
-        while (ch == '\n')
-            fin.get(ch), line++;
-        while (ch == ' ' || ch == '\t')
-            fin.get(ch);
-        if (ch == EOF)
+        if (fin.eof())
             break;
+        while (ch == '\n') {
+            fin.get(ch), line++;
+            if (fin.eof())
+                break;
+        }
+        while (ch == ' ' || ch == '\t') {
+            fin.get(ch);
+            if (fin.eof())
+                break;
+        }
         token = "";
         if (isalpha(ch)) //如果是字母，则进行标识符处理
         {
@@ -89,7 +113,7 @@ int lexicalAnalysis()
                 fin.get(ch);   //读下一个字符
             }
             //查保留字
-            if (!isKeyword[getHash(token)]) //不是保留字，输出标识符
+            if (!find(getHash(token))) //不是保留字，输出标识符
                 fout << "ID\t" << token << endl;
             else
                 fout << token << "\t" << token << endl;
@@ -135,7 +159,6 @@ int lexicalAnalysis()
                     if (fin.eof())
                     {
                         fout << "ERROR\t"
-                             << "注释未完成"
                              << "\t错误: 第" << line << "行" << endl; //输出错误符号
                         return (4);
                     }
