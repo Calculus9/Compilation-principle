@@ -89,14 +89,13 @@ int lexicalAnalysis()
     fin.get(ch);
     while (!fin.eof())
     {
-        if (fin.eof())
-            break;
         while (ch == '\n' || ch == ' ' || ch == '\t') {
             if(ch == '\n') line++;
-            fin.get(ch);
             if (fin.eof())
                 break;
+            fin.get(ch);
         }
+        if(fin.eof()) break;
         token = "";
         if (isalpha(ch)) //如果是字母，则进行标识符处理
         {
