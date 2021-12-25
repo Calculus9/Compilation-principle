@@ -367,8 +367,8 @@ int bool_expr()
     printf("进入bool\n");
     int es = 0;
     es = additive_expr();//算术表达式
-    // if (es > 0)
-    //     return (es);
+    if (es > 0)
+        return (es);
     if (token == ">" || token == ">=" || token == "<" || token == "<=" || token == "==" || token == "!=")
     {
         getNext();
@@ -382,11 +382,11 @@ int bool_expr()
 //<additive_expr>::=<term>{(+|-)< term >}
 int additive_expr()
 {
-    printf("suans表达式\n");
+    printf("算术表达式\n");
     int es = 0;
     es = term();
-    // if (es > 0)
-    //     return (es);
+    if (es > 0)
+        return (es);
     while (token == "+" || token == "-")
     {
         getNext();
@@ -404,8 +404,8 @@ int term()
     cout<<token<<","<<token1<<endl;
     int es = 0;
     es = factor();
-    // if (es > 0)
-    //     return (es);
+    if (es > 0)
+        return (es);
     while (token == "*" || token == "/")
     {
         getNext();
@@ -425,8 +425,8 @@ int factor()
     {
         getNext();
         es = expression();
-        // if (es > 0)
-        //     return (es);
+        if (es > 0)
+            return (es);
         if (token != ")")
             return (es = 6); //少右括号
         getNext();
