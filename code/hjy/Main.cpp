@@ -1,5 +1,7 @@
 #include "lab_1.h"
-#include "lab2.h"
+#include "lab_2.h"
+string openFilename;
+
 int main()
 {
     int es;

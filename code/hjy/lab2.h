@@ -2,9 +2,9 @@
 using namespace std;
 int TESTparse();
 int program();
-int compound_Stat();
+int compound_stat();
 int statement();
-int expression_Stat();
+int expression_stat();
 int expression();
 int bool_expr();
 int additive_expr();
@@ -19,6 +19,7 @@ int declaration_stat();
 int declaration_list();
 int statement_list();
 int compound_stat();
+int do_while_stat();
 char token[20], token1[40]; // token保存单词符号，token1保存单词值
 extern char Scanout[300];	//保存词法分析输出文件名
 FILE *fp;					//用于指向输入输出文件的指针

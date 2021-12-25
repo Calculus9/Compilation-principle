@@ -14,7 +14,7 @@ string singleword = "+-*(){};,/%\"";
 //下面定义双分界符的首字符
 string doubleword = "><=!";
 
-string openFilename;
+extern string openFilename;
 const char *outputFilename = "./Lexical_output.txt";
 
 unsigned long long getHash(string &s)
@@ -87,8 +87,7 @@ int lexicalAnalysis()
 
     cout << "请输入源程序文件名（包括路径）: ";
     cin >> openFilename;
-    string tmp = "./test/" + openFilename;
-    const char *copenFilename = tmp.c_str(); //可读不可改的常指针
+    const char *copenFilename = openFilename.c_str(); //可读不可改的常指针
 
     //判断输入文件名是否正确
     ifstream fin(copenFilename); //输入，从硬盘到内存
