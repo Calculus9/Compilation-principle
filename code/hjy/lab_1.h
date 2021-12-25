@@ -15,7 +15,7 @@ string singleword = "+-*(){};,/%\"";
 string doubleword = "><=!";
 
 extern string openFilename;
-const char *outputFilename = "./Lexical_output.txt";
+const char *outputFilename = "./lex_output.txt";
 
 unsigned long long getHash(string &s)
 {
@@ -132,6 +132,7 @@ int lexicalAnalysis()
                 token = token.substr(39);
                 cout << "第" << line << "行标识符越界，已去掉" << token1 << "，剩余字符:" << token << endl;
                 fout << "标识符越界，已截取，当前ID为" << token << endl;
+                es = 3;
             }
             //查保留字
             if (!find(getHash(token))) //不是保留字，输出标识符
