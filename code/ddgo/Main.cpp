@@ -1,5 +1,5 @@
 #include "lab_1.h"
-#include "lab_2_1.h"
+#include "lab_3.h"
 
 int main()
 {
