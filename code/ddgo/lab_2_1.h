@@ -49,9 +49,6 @@ int TESTparse()
 	case 0:
 		printf("语法分析成功!\n");
 		break;
-	case 10:
-		printf("打开文件失败!\n");
-		break;
 	case 1:
 		printf("缺少{!\n");
 		break;
@@ -72,6 +69,15 @@ int TESTparse()
 		break;
 	case 7:
 		printf("缺少操作数!\n");
+		break;
+	case 8:
+		printf("数组缺少NUM\n");
+		break;
+	case 9:
+		printf("缺少]\n");
+		break;
+	case 10:
+		printf("打开文件失败!\n");
 		break;
 	}
 	fclose(fp);
@@ -118,7 +124,7 @@ int declaration_list()
 	return (es);
 }
 //<声明语句> ::=int <变量>；
-//<declaration_stat>::=int ID{,ID};
+//<declaration_stat>::=int ID;  -> ID{,ID}; -> ID([NUM]|空){,ID([NUM]|空)};
 int declaration_stat()
 {
 	int es = 0;
@@ -127,11 +133,26 @@ int declaration_stat()
 		return (es = 3); //不是标识符
 	
 	FIN;
+	if(strcmp(token, "[") == 0) {
+		FIN;
+		if(strcmp(token, "NUM")) return (es = 8);
+		FIN;
+		if(strcmp(token, "]")) return (es = 9);
+		FIN;
+	}
+
 	while(strcmp(token, ",") == 0) {
 		FIN;
 		if (strcmp(token, "ID"))
 			return (es = 3); //不是标识符
 		FIN;
+		if(strcmp(token, "[") == 0) {
+			FIN;
+			if(strcmp(token, "NUM")) return (es = 8);
+			FIN;
+			if(strcmp(token, "]")) return (es = 9);
+			FIN;
+		}
 	}
 	if (strcmp(token, ";"))
 		return (es = 4);
@@ -414,7 +435,7 @@ int additive_expr()
 	return (es);
 }
 //<项>::=<因子>{(%|*|/)<因子>}
-//< term >::=<factor>{(*| /)< factor >}
+//< term >::=<factor>{(%|*|/)< factor >}
 int term()
 {
 	int es = 0;
