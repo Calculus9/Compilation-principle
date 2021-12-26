@@ -1,0 +1,16 @@
+        LOADI 1
+        STO 1
+        LOAD 1
+        LOAD 0
+        MULT
+        STO 1
+        LOAD 0
+        LOADI 1
+        ADD
+        STO 0
+        LOAD 0
+        LOADI 10
+        LE
+        LOAD 1
+        OUT
+        STOP
