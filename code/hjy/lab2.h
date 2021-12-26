@@ -21,15 +21,15 @@ int statement_list();
 int compound_stat();
 int do_while_stat();
 char token[20], token1[40]; // token保存单词符号，token1保存单词值
-extern char Scanout[300];	//保存词法分析输出文件名
-FILE *fp;					//用于指向输入输出文件的指针
+// extern char Scanout[300];	//保存词法分析输出文件名
+FILE *fp; //用于指向输入输出文件的指针
 //语法分析程序
 int TESTparse()
 {
 	int es = 0;
-	if ((fp = fopen(Scanout, "r")) == NULL)
+	if ((fp = fopen("./lex_output.txt", "r")) == NULL)
 	{
-		printf("\n打开%s错误!\n", Scanout);
+		printf("\n打开错误!\n");
 		es = 10;
 	}
 
@@ -42,7 +42,7 @@ int TESTparse()
 		printf("语法分析成功!\n");
 		break;
 	case 10:
-		printf("打开文件 %s失败!\n", Scanout);
+		printf("打开文件失败!\n");
 		break;
 	case 1:
 		printf("缺少{!\n");
@@ -157,14 +157,16 @@ int statement()
 	if (es == 0 && strcmp(token, "for") == 0)
 		es = for_stat(); //<for语句>
 	//可在此处添加do语句调用
+	if (es == 0 && strcmp(token, "do") == 0)
+		es = do_while_stat();
 	if (es == 0 && strcmp(token, "read") == 0)
 		es = read_stat(); //<read语句>
 	if (es == 0 && strcmp(token, "write") == 0)
 		es = write_stat(); //<write语句>
 	if (es == 0 && strcmp(token, "{") == 0)
 		es = compound_stat(); //<复合语句>
-	// if (es == 0 && (strcmp(token, "ID") == 0 || strcmp(token, "NUM") == 0 || strcmp(token, "(") == 0))
-	// 	es = expression_stat(); //<表达式语句>
+	if (es == 0 && (strcmp(token, "ID") == 0 || strcmp(token, "NUM") == 0 || strcmp(token, "(") == 0))
+		es = expression_stat(); //<表达式语句>
 	return (es);
 }
 //<IF 语句>::= if (<表达式>) <语句 > [else <语句 >]
@@ -198,6 +200,34 @@ int if_stat()
 			return (es);
 	}
 	return (es);
+}
+// <do-while_stat>→ do ’{‘<statement>’}’while (<expr >) ;
+int do_while_stat()
+{
+	int es = 0;
+	fscanf(fp, "%s %s\n", &token, &token1);
+	printf("%s %s\n", token, token1);
+	es = statement();
+	if (es)
+		return es;
+	fscanf(fp, "%s %s\n", &token, &token1);
+	printf("%s %s\n", token, token1);
+	if (strcmp(token, "while") == 0) // while部分处理
+	{
+		fscanf(fp, "%s %s\n", &token, &token1);
+		printf("%s %s\n", token, token1);
+		es = expression();
+		if (es > 0)
+			return es;
+		// fscanf(fp, "%s %s\n", &token, &token1);
+		printf("%s %s\n", token, token1);
+		if (strcmp(token, ";"))
+		{
+			return (es = 4);
+		}
+		fscanf(fp, "%s %s\n", &token, &token1);
+	}
+	return es;
 }
 //<while语句>::=while(<表达式>) <语句>
 //<while_stat>::= while (<expr >) < statement >
@@ -383,7 +413,7 @@ int bool_expr()
 	}
 	return (es);
 }
-//<算术表达式>::=<项>{(+|-)<项>}
+//<算术表达式>::=<项>{(+|-)<项>}%
 //<additive_expr>::=<term>{(+|-)< term >}
 int additive_expr()
 {
@@ -401,7 +431,7 @@ int additive_expr()
 	}
 	return (es);
 }
-//<项>::=<因子>{(*|/)<因子>}
+//<项>::=<因子>{(*|/)<因子>}%
 //< term >::=<factor>{(*| /)< factor >}
 int term()
 {
@@ -409,7 +439,7 @@ int term()
 	es = factor();
 	if (es > 0)
 		return (es);
-	while (strcmp(token, "*") == 0 || strcmp(token, "/") == 0)
+	while (strcmp(token, "*") == 0 || strcmp(token, "/") == 0 || strcmp(token, "%") == 0)
 	{
 		fscanf(fp, "%s %s\n", &token, &token1);
 		printf("%s %s\n", token, token1);
