@@ -1,5 +1,4 @@
 {
-int 2a;
 int a2;
 read n;
 n = 345;

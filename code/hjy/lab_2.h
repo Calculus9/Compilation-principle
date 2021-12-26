@@ -10,6 +10,7 @@ int statement();
 int expression_stat();
 int expression();
 int bool_expr();
+int do_stat();
 int additive_expr();
 int term();
 int factor();
@@ -152,6 +153,9 @@ int statement_list()
     }
     return (es);
 }
+int do_stat()
+{
+}
 //<语句>::=<if语句>|<while语句>|<for语句>|<read语句>
 //         |<write语句>|<复合语句>|<表达式语句>
 //<statement>::= <if_stat>|<while_stat>|<for_stat>
@@ -166,6 +170,8 @@ int statement()
     if (es == 0 && token == "for")
         es = for_stat(); //<for语句>
     //可在此处添加do语句调用
+    if (es == 0 && token == "do")
+        es = do_stat();
     if (es == 0 && token == "read")
         es = read_stat(); //<read语句>
     if (es == 0 && token == "write")
@@ -180,6 +186,7 @@ int statement()
 //<write_stat>::=write <expression>;
 int write_stat()
 {
+    printf("write_stat\n");
     int es = 0;
     getNext();
     es = expression();
@@ -194,14 +201,15 @@ int write_stat()
 //<read_stat>::=read ID;
 int read_stat()
 {
+    printf("read_stat");
     int es = 0;
     getNext();
-    if (token == "ID")
+    if (token != "ID")
         return (es = 3); //少标识符
     getNext();
     if (token != ";")
         return (es = 4); //少分号
-    getNext();
+    // getNext();
     return (es);
 }
 
@@ -209,6 +217,7 @@ int read_stat()
 //<for_stat>::= for(<expr>,<expr>,<expr>)<statement>
 int for_stat()
 {
+    printf("for_stat\n");
     int es = 0;
     getNext();
     if (token != "(")
@@ -239,6 +248,7 @@ int for_stat()
 //<while_stat>::= while (<expr >) < statement >
 int while_stat()
 {
+    printf("while_stat\n");
     int es = 0;
     getNext();
     if (token != "(")
@@ -285,6 +295,7 @@ int if_stat()
 //<compound_stat>::={<statement_list>}
 int compound_stat()
 { //复合语句函数
+    printf("compound_stat\n");
     int es = 0;
     getNext();
     es = statement_list();
@@ -294,7 +305,9 @@ int compound_stat()
 //<表达式语句>::=<<表达式>;|;
 //<expression_stat>::=<expression>;|;
 int expression_stat()
+
 {
+    printf("expression_stat\n");
     int es = 0;
     if (token == ";")
     {
@@ -319,18 +332,18 @@ int expression_stat()
 //<expr>::=ID=<bool_expr>|<bool_expr>
 int expression()
 {
+    printf("expression\n");
     int es = 0, fileadd;
     // char token2[20], token3[40];
     string token2, token3;
-    cout<<"aaaaaaaaaaa"<<token<<endl;
+    cout << "aaaaaaaaaaa" << token << endl;
     if (token == "ID")
     {
-        string tokenleft,tokenright;
+        string tokenleft, tokenright;
         tokenleft = token;
         tokenright = token1;
         fileadd = fin.tellg(); //记住当前文件位置
         fin >> token2 >> token3;
-        // TODO:token2和token3
         if (es > 0)
             return (es);
         if (token2 == "=") //'=',赋值语句
@@ -341,10 +354,10 @@ int expression()
         else
         {
             // TODO://若非'='则文件指针回到'='前的标识符
-            fin.seekg(fileadd,std::ios::beg);//文件指针回到保留行
+            fin.seekg(fileadd, std::ios::beg); //文件指针回到保留行
             token = tokenleft;
             token1 = tokenright;
-            cout<<token<<" "<<token1<<endl;
+            cout << token << " " << token1 << endl;
             //  fseek(fp, fileadd, 0); //若非'='则文件指针回到'='前的标识符
             // printf("%s %s\n", token, token1);
             es = bool_expr();
@@ -364,9 +377,9 @@ int expression()
 
 int bool_expr()
 {
-    printf("进入bool\n");
+    printf("bool_expr\n");
     int es = 0;
-    es = additive_expr();//算术表达式
+    es = additive_expr(); //算术表达式
     if (es > 0)
         return (es);
     if (token == ">" || token == ">=" || token == "<" || token == "<=" || token == "==" || token == "!=")
@@ -401,12 +414,12 @@ int additive_expr()
 int term()
 {
     printf("进入term函数,");
-    cout<<token<<","<<token1<<endl;
+    cout << token << "," << token1 << endl;
     int es = 0;
     es = factor();
     if (es > 0)
         return (es);
-    while (token == "*" || token == "/")
+    while (token == "*" || token == "/" || token == "%")
     {
         getNext();
         es = factor();
@@ -420,6 +433,8 @@ int term()
 
 int factor()
 {
+    printf("进入factor函数\n");
+    cout << token << token1 << endl;
     int es = 0;
     if (token == "(")
     {
@@ -435,9 +450,7 @@ int factor()
     {
         if (token == "ID" || token == "NUM")
         {
-            cout<<token<<token1<<endl;
             getNext();
-            cout<<token<<token1<<endl;
             return (es);
         }
         else
