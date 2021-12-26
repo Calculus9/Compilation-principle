@@ -105,10 +105,6 @@ int lexicalAnalysis()
     fin.get(ch);
     while (!fin.eof())
     {
-<<<<<<< HEAD
-        while (ch == '\n' || ch == ' ' || ch == '\t') {
-            if(ch == '\n') line++;
-=======
         if (fin.eof())
             break;
         while (ch == '\n' || ch == ' ' || ch == '\t')
@@ -116,10 +112,8 @@ int lexicalAnalysis()
             if (ch == '\n')
                 line++;
             fin.get(ch);
->>>>>>> feat/lab1
             if (fin.eof())
                 break;
-            fin.get(ch);
         }
         if(fin.eof()) break;
         token = "";
