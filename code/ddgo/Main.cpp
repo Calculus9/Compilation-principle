@@ -1,5 +1,5 @@
 #include "lab_1.h"
-#include "lab_2.h"
+#include "lab_2_1.h"
 
 int main()
 {
@@ -13,10 +13,6 @@ int main()
         es = TESTparse();
         if (es > 0)
             cout << "语法分析有问题, 编译停止!" << endl;
-        else 
-        {
-
-        }
     }
 
     return 0;

@@ -15,7 +15,7 @@ string singleword = "+-*(){};,/%\"";
 string doubleword = "><=!";
 
 string openFilename;
-const char *outputFilename = "./Lexical_output.txt";
+const char *outputFilename = "../Lexical_output.txt";
 
 unsigned long long getHash(string &s)
 {
@@ -59,14 +59,6 @@ void init()
     {
         insert(getHash(keyword[i]));
     }
-}
-
-int judge_length(string s)
-{
-    if (s.size() > 39)
-        return 1;
-    else
-        return 0;
 }
 
 /**
@@ -124,15 +116,8 @@ int lexicalAnalysis()
             //如果是字母数字则组合标识符；如果不是则标识符组合结束
             while (isalnum(ch))
             {
-                token += ch; //组合存放到token中
+                if((int)token.size() < 39) token += ch; //组合存放到token中
                 fin.get(ch); //读下一个字符
-            }
-            if (judge_length(token))
-            {
-                string token1 = token.substr(0, 39);
-                token = token.substr(39);
-                cout << "第" << line << "行标识符越界，已去掉" << token1 << "，剩余字符:" << token << endl;
-                fout << "标识符越界，已截取，当前ID为" << token << endl;
             }
             //查保留字
             if (!find(getHash(token))) //不是保留字，输出标识符
