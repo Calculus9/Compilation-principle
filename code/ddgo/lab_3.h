@@ -97,7 +97,7 @@ int TESTparse()
 	if (es==0) es=program();
 	printf("==语法、语义分析及代码生成程序结果==\n");
 	if(es != 0 && es != 10) {
-		printf("再第%d行，",line);
+		printf("在第%d行，",line);
 	}
 	switch(es)
 	{
@@ -146,6 +146,7 @@ int program()
 	   es=2;
 	   return(es);
    }
+   FIN;
    fprintf(fout,"        STOP\n");//产生停止指令
    return(es);
 }
@@ -323,6 +324,12 @@ int while_stat()
 	FIN;
 	es=statement();
 	if (es>0) return(es);
+	if(strcmp(token,"}"))//判断是否'}'
+	{
+		es=2;
+		return(es);
+	}
+	FIN;
 	fprintf(fout,"        BR LABEL%d\n",label1);//输出无条件转移指令
 	fprintf(fout,"LABEL%d:\n",label2);//设置label2标号
 	return(es);
@@ -376,6 +383,12 @@ int for_stat()
 	FIN;
 	es=statement();
 	if (es>0) return(es);
+	if(strcmp(token,"}"))//判断是否'}'
+	{
+		es=2;
+		return(es);
+	}
+	FIN;
 	fprintf(fout,"        BR LABEL%d\n",label4);//输出无条件转移指令
 	fprintf(fout,"LABEL%d:\n",label2);//设置label2标号
 	return(es);
