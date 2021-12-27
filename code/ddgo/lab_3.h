@@ -213,9 +213,9 @@ int statement()
 	if (es==0 && strcmp(token,"if")==0) es=if_stat();//<IFÓï¾ä>
 	if (es==0 && strcmp(token,"while")==0) es=while_stat();//<whileÓï¾ä>
 	if (es==0 && strcmp(token,"for")==0) es=for_stat();//<forÓï¾ä>
-	//¿ÉÔÚ´Ë´¦Ìí¼ÓdoÓï¾äµ÷ÓÃ
     if (es == 0 && strcmp(token, "do") == 0) es = do_while_stat();
 	if (es==0 && strcmp(token,"read")==0) es=read_stat();//<readÓï¾ä>
+	if (es==0 && strcmp(token,"int")==0) es=declaration_stat();//<intÓï¾ä>
 	if (es==0 && strcmp(token,"write")==0) es=write_stat();//<writeÓï¾ä>
 	if (es==0 && strcmp(token,"{")==0) es=compound_stat();//<¸´ºÏÓï¾ä>
 	if (es==0 && (strcmp(token,"ID")==0||strcmp(token,"NUM")==0||strcmp(token,"(")==0)) es=expression_stat();//<±í´ïÊ½Óï¾ä>
@@ -544,8 +544,8 @@ int additive_expr()
 	return(es);
 }
 
-//< term >::=<factor>{(*| /)< factor >} 
-//< term >::=<factor>{(*< factor >@MULT | /< factor >@DIV)} 
+//< term >::=<factor>{(*| /|%)< factor >} 
+//< term >::=<factor>{(*< factor >@MULT | /< factor >@DIV)|%< factor >@MOD)} 
 
 int term()
 {
@@ -561,6 +561,7 @@ int term()
 		if(es>0) return(es);
 		if ( strcmp(token2,"*")==0 ) fprintf(fout,"        MULT\n");
 		if ( strcmp(token2,"/")==0 ) fprintf(fout,"        DIV\n");
+		if ( strcmp(token2,"%")== 0) fprintf(fout,"        MOD\n");
 	}
 	return(es);
 }
