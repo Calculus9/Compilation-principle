@@ -1,5 +1,6 @@
 #include "lab_1.h"
 #include "lab_3.h"
+#include "lab_3_1.h"
 
 int main()
 {
@@ -13,6 +14,11 @@ int main()
         es = TESTparse();
         if (es > 0)
             cout << "语法分析有问题, 编译停止!" << endl;
+        else {
+            es = TESTmachine();
+            if(es > 0) cout << "模拟机转换失败" <<endl;
+            else cout << "模拟机转换成功" <<endl; 
+        }
     }
 
     return 0;
