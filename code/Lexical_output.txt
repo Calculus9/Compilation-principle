@@ -6,13 +6,11 @@ ID	b	2
 ,	,	2
 ID	tmp	2
 ;	;	2
+read	read	3
 ID	a	3
-=	=	3
-NUM	5	3
 ;	;	3
+read	read	4
 ID	b	4
-=	=	4
-NUM	10	4
 ;	;	4
 ID	tmp	5
 =	=	5
