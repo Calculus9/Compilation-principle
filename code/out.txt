@@ -1,7 +1,3 @@
-LABEL0:
-LABEL1:
-        LOADI 1
+        LOADI 7
         STO 0
-        LOAD 0
-        LOADI 10
-        LES
+        POP

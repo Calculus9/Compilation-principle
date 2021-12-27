@@ -111,14 +111,19 @@ int lexicalAnalysis()
         token = "";
         if (isalpha(ch)) //如果是字母，则进行标识符处理
         {
+            int ok = 0;
             token += ch;
             fin.get(ch); //继续输入字符
             //如果是字母数字则组合标识符；如果不是则标识符组合结束
             while (isalnum(ch))
             {
                 if((int)token.size() < 39) token += ch; //组合存放到token中
+                else {
+                    ok = 1;
+                }
                 fin.get(ch); //读下一个字符
             }
+            if(ok) cout << "自动截断" <<endl;
             //查保留字
             if (!find(getHash(token))) //不是保留字，输出标识符
                 fout << "ID\t" << token << endl;

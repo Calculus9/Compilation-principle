@@ -132,12 +132,16 @@ int program()
    FIN;
    es=declaration_list();
    if (es>0) return(es);
+//    printf("\t\t\t符号表\n");
+//    printf("\t\t名字\t\t地址\n");
+//    for(i=0;i<vartablep;i++)
+// 	   printf("\t\t%s\t\t%d\n",vartable[i].name,vartable[i].address);
+   es=statement_list();
+   if (es>0) return(es);
    printf("\t\t\t符号表\n");
    printf("\t\t名字\t\t地址\n");
    for(i=0;i<vartablep;i++)
 	   printf("\t\t%s\t\t%d\n",vartable[i].name,vartable[i].address);
-   es=statement_list();
-   if (es>0) return(es);
    if(strcmp(token,"}"))//判断是否'}'
    {
 	   es=2;
@@ -213,7 +217,7 @@ int statement()
 	if (es==0 && strcmp(token,"if")==0) es=if_stat();//<IF语句>
 	if (es==0 && strcmp(token,"while")==0) es=while_stat();//<while语句>
 	if (es==0 && strcmp(token,"for")==0) es=for_stat();//<for语句>
-    if (es == 0 && strcmp(token, "do") == 0) es = do_while_stat();
+    if (es==0 && strcmp(token, "do") == 0) es = do_while_stat();
 	if (es==0 && strcmp(token,"read")==0) es=read_stat();//<read语句>
 	if (es==0 && strcmp(token,"int")==0) es=declaration_stat();//<int语句>
 	if (es==0 && strcmp(token,"write")==0) es=write_stat();//<write语句>
@@ -327,9 +331,9 @@ int while_stat()
 
 //<for_stat>::= for(<expr>,<expr>,<expr>)<statement>
 /*
-<for_stat>::=for (<expression>;
+<for_stat>::=for (<expression>@POP;
              @SETlabel↑label1< expression >@BRF↑label2@BR↑label3;
-             @SETlabel↑label4 < expression >@BR↓label1) 
+             @SETlabel↑label4 < expression >@POP@BR↓label1) 
              @SETlabel↓label3 <语句 >@BR↓label4@SETlabel↓label2 
 动作解释：
 1.	@SETlabel↓label1：设置标号label1
@@ -349,6 +353,7 @@ int for_stat()
 	FIN;
 	es=expression();
 	if (es>0) return(es);
+	fprintf(fout,"        POP\n");
 	if (strcmp(token,";")) 	return(es=4);  //少分号
 	label1=labelp++;
 	fprintf(fout,"LABEL%d:\n",label1);//设置label1标号
@@ -365,6 +370,7 @@ int for_stat()
 	FIN;
 	es=expression();
 	if (es>0) return(es);
+	fprintf(fout,"        POP\n");
 	fprintf(fout,"        BR LABEL%d\n",label1);//输出无条件转移指令
 	if (strcmp(token,")"))  return(es=6); //少右括号
 	fprintf(fout,"LABEL%d:\n",label3);//设置label3标号
@@ -402,7 +408,7 @@ int write_stat()
 }
 
 //<read_stat>::=read ID;
-//<read_stat>::=read ID↑n LOOK↓n↑d @IN@STI↓d;
+//<read_stat>::=read ID↑n LOOK↓n↑d @IN@STI↓d@POP;
 //动作解释：
 //@LOOK↓n↑d:查符号表n，给出变量地址d; 没有，变量没定义
 //@IN：输出IN
@@ -417,7 +423,8 @@ int read_stat()
 	es=lookup(token1,&address);
 	if (es>0) return(es);
 	fprintf(fout,"        IN   \n");//输入指令
-	fprintf(fout,"        STI   %d\n",address);//指令
+	fprintf(fout,"        STO   %d\n",address);//指令
+	fprintf(fout,"        POP\n");
 	FIN;
 	if (strcmp(token,";"))  return(es=4);  //少分号
 	FIN;
@@ -432,7 +439,7 @@ int compound_stat(){   //复合语句函数
 	return(es);
 }
 
-//<expression_stat>::=<expression>;|;
+//<expression_stat>::=<expression>@POP;|;
 int expression_stat()
 {
 	int es=0;
@@ -443,6 +450,7 @@ int expression_stat()
 	}
 	es=expression();
 	if (es>0) return(es);
+	fprintf(fout,"        POP\n");
 	if (strcmp(token,";")==0) 
 	{
 		FIN;
