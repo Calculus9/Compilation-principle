@@ -48,7 +48,7 @@ int TESTmachine()
 		{
 			
 			strncpy(lno,&code[i][5],l-5);
-			lno[l]='\0';
+			lno[l-5]='\0';
 			itoa(label[atoi(lno)],code[i],10);
 		}
 	}
@@ -56,7 +56,7 @@ int TESTmachine()
 	i=0;
 	while (i<codecount)//执行每条指令
 	{
-		
+		// cout << code[i] << endl;
 		if (strcmp(code[i],"LOAD")==0)//LOAD D将D中的内容加载到操作数栈。
 		{
 			i++;
@@ -117,6 +117,7 @@ int TESTmachine()
 		// MOD
 		if (strcmp(code[i],"MOD")==0) 
 		{
+			cout << stack[stacktop-2] << " " << stack[stacktop-1] << endl;
 			stack[stacktop-2]=stack[stacktop-2]%stack[stacktop-1];
 			stacktop--;
 
@@ -191,7 +192,7 @@ int TESTmachine()
 		//IN 从标准输入设备（键盘）读入一个整型数据，并入栈。
 		if (strcmp(code[i],"IN")==0)
 		{
-			i++;
+			// i++;
 			printf("请输入数据: ");
 			scanf("%d",&stack[stacktop]);
 			stacktop++;

@@ -436,7 +436,7 @@ int read_stat()
 	if (es>0) return(es);
 	fprintf(fout,"        IN   \n");//输入指令
 	fprintf(fout,"        STI   %d\n",address);//指令
-	fprintf(fout,"        POP\n");
+	// fprintf(fout,"        POP\n");
 	FIN;
 	if (strcmp(token,";"))  return(es=4);  //少分号
 	FIN;

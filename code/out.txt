@@ -1,9 +1,7 @@
-        LOADI 5
-        STO 0
-        POP
-        LOADI 10
-        STO 1
-        POP
+        IN   
+        STI   0
+        IN   
+        STI   1
         LOADI 1
         STO 2
         POP
