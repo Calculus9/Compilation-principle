@@ -96,6 +96,9 @@ int TESTparse()
 	}
 	if (es==0) es=program();
 	printf("==语法、语义分析及代码生成程序结果==\n");
+	if(es != 0 && es != 10) {
+		printf("再第%d行，",line);
+	}
 	switch(es)
 	{
 		case 0: printf("语法、语义分析成功并抽象机汇编生成代码!\n");break;	
@@ -112,8 +115,7 @@ int TESTparse()
 		case 21: printf("符号表溢出!\n");break;
 		case 22: printf("变量重复定义!\n");break;
 		case 23: printf("变量未声明!\n");break;
-		case 24: printf("数组设置的大小非法!\n");break;
-		
+		case 24: printf("数组设置的大小非法!\n");break;	
 	}
 	fclose(fp);
 	fclose(fout);
