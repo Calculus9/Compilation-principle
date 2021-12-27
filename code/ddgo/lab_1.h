@@ -9,7 +9,7 @@ unsigned long long isKeyword[mod];
 int base = 131;
 
 //下面定义纯单分界符，添加%
-string singleword = "+-*(){};,/%[]\"\\";
+string singleword = "+-*(){};,%[]\"";
 
 //下面定义双分界符的首字符
 string doubleword = "><=!";

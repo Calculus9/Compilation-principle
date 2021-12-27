@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 int	int	1
 ID	i	1
 ,	,	1
@@ -33,3 +34,52 @@ ID	j	6
 ;	;	6
 }	}	7
 end
+=======
+{	{
+int	int
+ID	a
+,	,
+ID	b
+,	,
+ID	tmp
+;	;
+ID	a
+=	=
+NUM	5
+;	;
+ID	b
+=	=
+NUM	10
+;	;
+ID	tmp
+=	=
+NUM	1
+;	;
+while	while
+(	(
+ID	tmp
+!=	!=
+NUM	0
+)	)
+{	{
+ID	tmp
+=	=
+ID	a
+%	%
+ID	b
+;	;
+ID	a
+=	=
+ID	b
+;	;
+ID	b
+=	=
+ID	tmp
+;	;
+}	}
+write	write
+ID	a
+;	;
+}	}
+end
+>>>>>>> 72b713fb767a91a04ff2e8d04efb00345cbd8014

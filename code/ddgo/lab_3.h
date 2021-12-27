@@ -26,7 +26,7 @@ char token[20],token1[40];//token保存单词符号，token1保存单词值
 char Codeout[300]; //保存词法分析输出文件名
 FILE *fp,*fout; //用于指向输入输出文件的指针
 struct Table{//定义符号表结构
-     char name[8];
+     char name[40];
      int address;
 }vartable[maxvartablep];//改符号表最多容纳maxvartablep个记录
 int vartablep=0,labelp=0,datap=0;
@@ -44,7 +44,7 @@ int name_def(char *name,int cnt)
 	if(cnt <= 0) return (24);   
 	int i,es=0;
     if (vartablep>=maxvartablep) return(21);
-	for(i=vartablep-1;i==0;i--)//查符号表
+	for(i=vartablep-1;i>=0;i--)//查符号表
 	{ 
 		if (strcmp(vartable[i].name,name)==0)
 		{
@@ -219,7 +219,7 @@ int statement()
 	if (es==0 && strcmp(token,"for")==0) es=for_stat();//<for语句>
     if (es==0 && strcmp(token, "do") == 0) es = do_while_stat();
 	if (es==0 && strcmp(token,"read")==0) es=read_stat();//<read语句>
-	if (es==0 && strcmp(token,"int")==0) es=declaration_stat();//<int语句>
+	if (es==0 && strcmp(token,"int")==0) es=declaration_list();//<int语句>
 	if (es==0 && strcmp(token,"write")==0) es=write_stat();//<write语句>
 	if (es==0 && strcmp(token,"{")==0) es=compound_stat();//<复合语句>
 	if (es==0 && (strcmp(token,"ID")==0||strcmp(token,"NUM")==0||strcmp(token,"(")==0)) es=expression_stat();//<表达式语句>
@@ -423,7 +423,7 @@ int read_stat()
 	es=lookup(token1,&address);
 	if (es>0) return(es);
 	fprintf(fout,"        IN   \n");//输入指令
-	fprintf(fout,"        STO   %d\n",address);//指令
+	fprintf(fout,"        STI   %d\n",address);//指令
 	fprintf(fout,"        POP\n");
 	FIN;
 	if (strcmp(token,";"))  return(es=4);  //少分号
@@ -560,7 +560,7 @@ int term()
 	int es=0;
 	es=factor();
 	if(es>0) return(es);
-	while (strcmp(token,"*")==0 || strcmp(token,"/")==0)
+	while (strcmp(token,"*")==0 || strcmp(token,"/")==0 || strcmp(token,"%")==0)
 	{
 		char token2[20];
 		strcpy(token2,token);
