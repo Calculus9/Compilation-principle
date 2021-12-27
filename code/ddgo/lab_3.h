@@ -130,10 +130,10 @@ int program()
    FIN;
    es=declaration_list();
    if (es>0) return(es);
-   printf("     符号表\n");
-   printf("     名字       地址\n");
+   printf("\t\t\t符号表\n");
+   printf("\t\t名字\t\t地址\n");
    for(i=0;i<vartablep;i++)
-	   printf("      %s   %d\n",vartable[i].name,vartable[i].address);
+	   printf("\t\t%s\t\t%d\n",vartable[i].name,vartable[i].address);
    es=statement_list();
    if (es>0) return(es);
    if(strcmp(token,"}"))//判断是否'}'
@@ -268,13 +268,22 @@ int if_stat(){
 }
 
 // <do-while_stat>→ do ’{‘<statement>’}’while (<expr >) ;
+// <do-while_stat>→ do@SETlabel↓label1 
+// ’{‘<statement>’}’while (<expr >)@BRF↑label2@BR↑label1@SETlabel↓label2;
+// 	 其中动作符号的含义如下
+//   @BRF↑label2 ：输出 BRF label2, 
+//   @BR↑label1：输出 BR label1, 
+//   @SETlabel↓label1：设置标号label1 
+//   @SETlabel↓label2：设置标号label2
+
 int do_while_stat()
 {
-	int es = 0;
+	int es = 0,label1,label2;
+	label1=labelp++;//用label1记住无条件时要转向的标号
+	fprintf(fout,"LABEL%d:\n",label1);
 	FIN;
 	es = statement();
-	if (es)
-		return es;
+	if (es) return es;
 	FIN;
 	if (strcmp(token, "while") == 0) // while部分处理
 	{
@@ -288,6 +297,10 @@ int do_while_stat()
 		}
 		FIN;
 	}
+	label2=labelp++;//用label2记住要转向的标号
+	fprintf(fout,"        BRF LABEL%d\n",label2);//输出假转移指令
+	fprintf(fout,"        BR LABEL%d\n",label1);//输出无条件转移指令
+	fprintf(fout,"LABEL%d:\n",label2);
 	return es;
 }
 

@@ -1,5 +1,6 @@
         LOADI 1
         STO 1
+LABEL0:
         LOAD 1
         LOAD 0
         MULT
@@ -11,6 +12,9 @@
         LOAD 0
         LOADI 10
         LE
+        BRF LABEL1
+        BR LABEL0
+LABEL1:
         LOAD 1
         OUT
         STOP
