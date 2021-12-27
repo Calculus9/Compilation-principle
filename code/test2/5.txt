@@ -1,6 +1,9 @@
 {
-int abc;
-for (i=1;i<=n;i= i+1)
-{ 
-abc=abc+i; }if(i!=n) n = n+i;
-}
+int i;
+read i;
+int j;
+read j;
+if(i>j) j=i;
+for(i=1;i<j;j=j+1)
+{ sum=sum+i;
+write i;

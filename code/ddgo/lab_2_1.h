@@ -29,7 +29,7 @@ int line;
 void input()
 {
 	fscanf(fp, "%s %s %d\n", token, token1, &line);
-	printf("%s %s\n", token, token1);
+	printf("%s %s %d\n", token, token1, line);
 }
 
 //”Ô∑®∑÷Œˆ≥Ã–Ú
@@ -187,7 +187,7 @@ int statement()
 		es = for_stat(); //<for”Ôæ‰>
 	if (es == 0 && strcmp(token, "do") == 0)
 		es = do_while_stat(); //<do>
-	if (es == 0 && strcmp(token, "list") == 0)
+	if (es == 0 && strcmp(token, "int") == 0)
 		es = declaration_stat(); //<int”Ôæ‰>
 	if (es == 0 && strcmp(token, "read") == 0)
 		es = read_stat(); //<read”Ôæ‰>
@@ -303,16 +303,26 @@ int for_stat()
 //<write_stat>::=write <expression>;
 int write_stat()
 {
-	// TODO:
 	int es = 0;
 	FIN;
-	es = expression();
-	if (es > 0)
-		return (es);
+	if (strcmp(token, "\"") == 0)
+	{
+		do
+		{
+			FIN;
+		} while (strcmp(token, "\""));
+		FIN;
+	}
+	else
+	{
+		es = expression();
+		if (es > 0)
+			return es;
+	}
 	if (strcmp(token, ";"))
-		return (es = 4); //…Ÿ∑÷∫≈
+		return (es = 4);
 	FIN;
-	return (es);
+	return(es);
 }
 //<read_”Ôæ‰>::=read <±‰¡ø>;
 //<read_stat>::=read ID;
@@ -473,8 +483,8 @@ int factor()
 
 		if (strcmp(token, "ID") == 0 || strcmp(token, "NUM") == 0)
 		{
-			fscanf(fp, "%s %s %d\n", &token, &token1,&line);
-			printf("%s %s %d\n", token, token1,line);
+			fscanf(fp, "%s %s %d\n", &token, &token1, &line);
+			printf("%s %s %d\n", token, token1, line);
 			return (es);
 		}
 		else
