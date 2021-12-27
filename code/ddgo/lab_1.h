@@ -203,7 +203,7 @@ int lexicalAnalysis()
             cout << "ERROR\t" << token << "\t错误: 第" << line << "行" << endl; //输出错误符号
         }
     }
-    fout << "end" << endl;
+    fout << "end\t" << "end\t" << 0 << endl;
     fin.close();
     fout.close();
     return (es); //返回主程序

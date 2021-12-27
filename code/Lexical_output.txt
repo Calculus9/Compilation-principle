@@ -1,85 +1,36 @@
-<<<<<<< HEAD
-int	int	1
-ID	i	1
-,	,	1
-ID	j	1
-;	;	1
+{	{	1
 int	int	2
-NUM	5	2
-ID	k	2
+ID	i	2
 ;	;	2
-;	;	2
-;	;	2
-ID	i	3
-=	=	3
-NUM	1	3
+int	int	3
+ID	sum	3
 ;	;	3
-ID	j	4
+ID	sum	4
 =	=	4
-NUM	2	4
+NUM	1	4
 ;	;	4
-;	;	4
-;	;	4
-ID	IF	5
-(	(	5
-ID	i	5
->	>	5
-ID	j	5
-)	)	5
-write	write	5
-ID	i	5
-else	else	6
-ID	writ	6
-ID	j	6
-;	;	6
-}	}	7
-end
-=======
-{	{
-int	int
-ID	a
-,	,
-ID	b
-,	,
-ID	tmp
-;	;
-ID	a
-=	=
-NUM	5
-;	;
-ID	b
-=	=
-NUM	10
-;	;
-ID	tmp
-=	=
-NUM	1
-;	;
-while	while
-(	(
-ID	tmp
-!=	!=
-NUM	0
-)	)
-{	{
-ID	tmp
-=	=
-ID	a
-%	%
-ID	b
-;	;
-ID	a
-=	=
-ID	b
-;	;
-ID	b
-=	=
-ID	tmp
-;	;
-}	}
-write	write
-ID	a
-;	;
-}	}
-end
->>>>>>> 72b713fb767a91a04ff2e8d04efb00345cbd8014
+do	do	5
+{	{	6
+do	do	7
+{	{	8
+}	}	9
+while	while	9
+(	(	9
+ID	i	9
+<	<	9
+NUM	9	9
+)	)	9
+;	;	9
+}	}	10
+while	while	10
+(	(	10
+ID	i	10
+<=	<=	10
+NUM	10	10
+)	)	10
+;	;	10
+write	write	11
+ID	sum	11
+;	;	11
+}	}	12
+#	#	0

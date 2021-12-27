@@ -24,6 +24,7 @@ int do_while_stat();
 int name_def(char *name,int cnt);
 char token[20],token1[40];//token保存单词符号，token1保存单词值
 char Codeout[300]; //保存词法分析输出文件名
+int line,line1;
 FILE *fp,*fout; //用于指向输入输出文件的指针
 struct Table{//定义符号表结构
      char name[40];
@@ -34,8 +35,8 @@ int vartablep=0,labelp=0,datap=0;
 #define FIN input()
 
 void input() {
-	fscanf(fp, "%s %s\n", token, token1);
-	printf("%s %s\n", token, token1);
+	fscanf(fp, "%s %s %d\n", &token, &token1, &line);
+	printf("%s %s %d\n", token, token1, line);
 }
 
 //插入符号表动作@name-def↓n, t的程序如下：
@@ -132,10 +133,6 @@ int program()
    FIN;
    es=declaration_list();
    if (es>0) return(es);
-//    printf("\t\t\t符号表\n");
-//    printf("\t\t名字\t\t地址\n");
-//    for(i=0;i<vartablep;i++)
-// 	   printf("\t\t%s\t\t%d\n",vartable[i].name,vartable[i].address);
    es=statement_list();
    if (es>0) return(es);
    printf("\t\t\t符号表\n");
@@ -471,8 +468,8 @@ int expression()
 	if (strcmp(token,"ID")==0)
 	{   
 		fileadd=ftell(fp);   //@ASSIGN记住当前文件位置
-		fscanf(fp,"%s %s\n", &token2,&token3);
-		printf("%s %s\n",token2,token3);
+		fscanf(fp,"%s %s %d\n", &token2,&token3,&line1);
+		printf("%s %s %d\n",token2,token3,line1);
 		if (strcmp(token2,"=")==0)  //'='
 		{
 			int address;

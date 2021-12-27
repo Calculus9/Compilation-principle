@@ -1,7 +1,7 @@
 {
-    int a,b;
-    a = 3;
-    b = 2;
-    a = a % b;
-    write a;
+    int a;
+    read a;
+    int b;
+    read b;
+    write a+b;
 }
