@@ -190,7 +190,7 @@ int lexicalAnalysis()
             }
             else //不是*则处理单分界符/
             {
-                token += ch;
+                token  = "/";
                 fout << token << "\t" << token << "\t" << line << endl; //输出单分界符/
             }
         }

@@ -48,7 +48,7 @@ int TESTmachine()
 		{
 			
 			strncpy(lno,&code[i][5],l-5);
-			lno[i]='\0';
+			lno[l]='\0';
 			itoa(label[atoi(lno)],code[i],10);
 		}
 	}
@@ -76,6 +76,12 @@ int TESTmachine()
 			i++;
 			data[atoi(code[i])]=stack[stacktop-1];
 		}
+		// POP
+		if (strcmp(code[i],"POP")==0)
+		{
+			stacktop--;
+		}
+
 		//STI D 将操作数栈栈顶单元内容存入D
 		//且栈顶单元内容出栈。
 		if (strcmp(code[i],"STI")==0)
