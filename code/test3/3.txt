@@ -1,0 +1,14 @@
+/*
+文件测试表达式、变量重复定义
+*/
+{
+int temp;
+sum=(2!=3);
+write sum;
+int temp;
+if(sum>=1)
+{
+temp=30/70;;
+write temp;
+}
+}

@@ -1,6 +1,7 @@
 {
-    int a,b[10],c,d[10];
-    while(a < 10) {
-        b;
-    }
+    int a,b;
+    a = 3;
+    b = 2;
+    a = a % b;
+    write a;
 }

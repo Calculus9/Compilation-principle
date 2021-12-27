@@ -108,6 +108,14 @@ int TESTmachine()
 			stack[stacktop-2]=stack[stacktop-2]/stack[stacktop-1];
 			stacktop--;
 		}
+		// MOD
+		if (strcmp(code[i],"MOD")==0) 
+		{
+			stack[stacktop-2]=stack[stacktop-2]%stack[stacktop-1];
+			stacktop--;
+
+		}
+
 		//BR    lab  无条件转移到lab
 		if (strcmp(code[i],"BR")==0)
 		{
