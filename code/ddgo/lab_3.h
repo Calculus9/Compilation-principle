@@ -21,7 +21,7 @@ int declaration_list();
 int statement_list();
 int compound_stat();
 int do_while_stat();
-int name_def(char *name);
+int name_def(char *name,int cnt);
 char token[20],token1[40];//token保存单词符号，token1保存单词值
 char Codeout[300]; //保存词法分析输出文件名
 FILE *fp,*fout; //用于指向输入输出文件的指针
@@ -39,8 +39,9 @@ void input() {
 }
 
 //插入符号表动作@name-def↓n, t的程序如下：
-int name_def(char *name)
-{    
+int name_def(char *name,int cnt)
+{
+	if(cnt <= 0) return (24);   
 	int i,es=0;
     if (vartablep>=maxvartablep) return(21);
 	for(i=vartablep-1;i==0;i--)//查符号表
@@ -53,8 +54,8 @@ int name_def(char *name)
 	}
 	if (es>0)   return(es);
 	strcpy(vartable[vartablep].name,name);
-	vartable[vartablep].address=datap;
-	datap++;//分配一个单元，数据区指针加1
+	vartable[vartablep].address=datap+cnt-1;
+	datap += cnt;//分配一个单元，数据区指针加1
 	vartablep++;	
 	return(es);
 }
@@ -110,6 +111,7 @@ int TESTparse()
 		case 21: printf("符号表溢出!\n");break;
 		case 22: printf("变量重复定义!\n");break;
 		case 23: printf("变量未声明!\n");break;
+		case 24: printf("数组设置的大小非法!\n");break;
 		
 	}
 	fclose(fp);
@@ -159,40 +161,30 @@ int declaration_list()
 	return(es);
 }
 
-//<declaration_stat>↓vartablep,datap,codep ->int ID↑n@name-def↓n,t;
+//<declaration_stat>↓vartablep,datap,codep ->int ID↑n↑c@name-def↓n,t,c;
 //<declaration_stat>::=int ID;  -> ID{,ID}; -> ID([NUM]|空){,ID([NUM]|空)};
 int declaration_stat()
 {
-	int es = 0;
-	FIN;
-	if (strcmp(token, "ID"))
-		return (es = 3); //不是标识符
-	es=name_def(token1);//插入符号表
-    if (es>0) return(es);
-	FIN;
-	if(strcmp(token, "[") == 0) {
-		FIN;
-		if(strcmp(token, "NUM")) return (es = 8);
-		FIN;
-		if(strcmp(token, "]")) return (es = 9);
-		FIN;
-	}
-
-	while(strcmp(token, ",") == 0) {
+	int es = 0,cnt = 1;
+	do {
 		FIN;
 		if (strcmp(token, "ID"))
 			return (es = 3); //不是标识符
-		es=name_def(token1);//插入符号表
-        if (es>0) return(es);
-        FIN;
+		char name[40];
+		strcpy(name,token1);
+		FIN;
 		if(strcmp(token, "[") == 0) {
 			FIN;
 			if(strcmp(token, "NUM")) return (es = 8);
+			cnt = atoi(token1);
 			FIN;
 			if(strcmp(token, "]")) return (es = 9);
 			FIN;
 		}
-	}
+		es=name_def(name,cnt);//插入符号表
+		if (es>0) return(es);
+	}while(strcmp(token, ",") == 0);
+
 	if (strcmp(token, ";"))
 		return (es = 4);
 	FIN;
@@ -394,8 +386,15 @@ int write_stat()
 {
 	int es=0;
 	FIN;
-	es=expression();
-	if (es>0)return(es);
+	if(strcmp(token,"\"") == 0) {
+		do {
+			FIN;
+		}while(strcmp(token,"\""));
+		FIN;
+	}else {
+		es=expression();
+		if (es>0)return(es);
+	}
 	if (strcmp(token,";"))  return(es=4);  //少分号
 	fprintf(fout,"        OUT\n");//输出指令
 	FIN;
