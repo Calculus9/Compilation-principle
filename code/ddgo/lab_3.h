@@ -455,7 +455,7 @@ int expression_stat()
 }
 
 //<expression>::=ID¡ün@LOOK¡ýn¡üd@ASSIGN=<bool_expr>@STO¡ýd |<bool_expr>
-
+// <expression>::= ID[NUM]¡ün¡üc@LOOK¡ýn¡ýc¡üd@ASSIGN=<bool_expr>@STO¡ýd
 int expression()
 {
 	int es=0,fileadd;
