@@ -4,9 +4,6 @@ int sum;
 sum=1;
 do
 {
-do
-{
-}while(i<9);
 }while(i<=10);
 write sum;
 }

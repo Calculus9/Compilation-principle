@@ -1,7 +1,8 @@
 {
-    int a;
-    read a;
-    int b;
-    read b;
-    write a+b;
+int a;
+a= - -123;
+if(if(a>100) a=a*a*a*a*a;)
+else { a=a/10; b=a/100; }
+write a;
+write - - -b;
 }
