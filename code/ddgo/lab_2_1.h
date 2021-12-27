@@ -23,11 +23,12 @@ int do_while_stat();
 char token[20], token1[40]; // token保存单词符号，token1保存单词值
 // extern char Scanout[300];	//保存词法分析输出文件名
 FILE *fp; //用于指向输入输出文件的指针
-
+int line;
 #define FIN input()
 
-void input() {
-	fscanf(fp, "%s %s\n", token, token1);
+void input()
+{
+	fscanf(fp, "%s %s %d\n", token, token1, &line);
 	printf("%s %s\n", token, token1);
 }
 
@@ -40,7 +41,6 @@ int TESTparse()
 		printf("\n打开错误!\n");
 		es = 10;
 	}
-
 	if (es == 0)
 		es = program();
 	printf("=====语法分析结果!======\n");
@@ -80,6 +80,8 @@ int TESTparse()
 		printf("打开文件失败!\n");
 		break;
 	}
+	if (es)
+		printf("当前错误在源文件第%d行\n", line);
 	fclose(fp);
 	return (es);
 }
@@ -128,32 +130,28 @@ int declaration_list()
 int declaration_stat()
 {
 	int es = 0;
-	FIN;
-	if (strcmp(token, "ID"))
-		return (es = 3); //不是标识符
-	
-	FIN;
-	if(strcmp(token, "[") == 0) {
-		FIN;
-		if(strcmp(token, "NUM")) return (es = 8);
-		FIN;
-		if(strcmp(token, "]")) return (es = 9);
-		FIN;
-	}
-
-	while(strcmp(token, ",") == 0) {
+	do
+	{
 		FIN;
 		if (strcmp(token, "ID"))
 			return (es = 3); //不是标识符
+		char name[40];
+		strcpy(name, token1);
 		FIN;
-		if(strcmp(token, "[") == 0) {
+		if (strcmp(token, "[") == 0)
+		{
 			FIN;
-			if(strcmp(token, "NUM")) return (es = 8);
+			if (strcmp(token, "NUM"))
+				return (es = 8);
 			FIN;
-			if(strcmp(token, "]")) return (es = 9);
+			if (strcmp(token, "]"))
+				return (es = 9);
 			FIN;
 		}
-	}
+		if (es > 0)
+			return (es);
+	} while (strcmp(token, ",") == 0);
+
 	if (strcmp(token, ";"))
 		return (es = 4);
 	FIN;
@@ -187,9 +185,10 @@ int statement()
 		es = while_stat(); //<while语句>
 	if (es == 0 && strcmp(token, "for") == 0)
 		es = for_stat(); //<for语句>
-	//可在此处添加do语句调用
 	if (es == 0 && strcmp(token, "do") == 0)
-		es = do_while_stat();
+		es = do_while_stat(); //<do>
+	if (es == 0 && strcmp(token, "list") == 0)
+		es = declaration_stat(); //<int语句>
 	if (es == 0 && strcmp(token, "read") == 0)
 		es = read_stat(); //<read语句>
 	if (es == 0 && strcmp(token, "write") == 0)
@@ -304,6 +303,7 @@ int for_stat()
 //<write_stat>::=write <expression>;
 int write_stat()
 {
+	// TODO:
 	int es = 0;
 	FIN;
 	es = expression();
@@ -372,21 +372,21 @@ int expression()
 	if (strcmp(token, "ID") == 0)
 	{
 		fileadd = ftell(fp); //记住当前文件位置
-		fscanf(fp, "%s %s\n", &token2, &token3);
+		fscanf(fp, "%s %s %d\n", &token2, &token3, &line);
 		printf("%s %s\n", token2, token3);
 
 		if (es > 0)
 			return (es);
 		if (strcmp(token2, "=") == 0) //'='
 		{
-			fscanf(fp, "%s %s\n", &token, &token1);
+			fscanf(fp, "%s %s %d\n", &token, &token1, &line);
 			printf("%s %s\n", token, token1);
 			es = bool_expr();
 		}
 		else
 		{
 			fseek(fp, fileadd, 0); //若非'='则文件指针回到'='前的标识符
-			printf("%s %s\n", token, token1);
+			printf("%s %s %d\n", token, token1, line);
 			es = bool_expr();
 			if (es > 0)
 				return (es);
@@ -473,8 +473,8 @@ int factor()
 
 		if (strcmp(token, "ID") == 0 || strcmp(token, "NUM") == 0)
 		{
-			fscanf(fp, "%s %s\n", &token, &token1);
-			printf("%s %s\n", token, token1);
+			fscanf(fp, "%s %s %d\n", &token, &token1,&line);
+			printf("%s %s %d\n", token, token1,line);
 			return (es);
 		}
 		else

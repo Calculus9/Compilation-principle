@@ -1,8 +1,5 @@
 {
-int abc;
-read n;
-n = 5;
-for (i=1;i<=n; i= i+1)
+for (i=1;i<=n;i= i+1)
 { 
 abc=abc+i; }if(i!=n) n = n+i;
 }

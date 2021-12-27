@@ -1,7 +1,7 @@
 {
 int a;
 a=-123;
-if(a>5) a=a+10;
+if if(a>5) a=a+10;
 else a=a-10;
 write a;
 }

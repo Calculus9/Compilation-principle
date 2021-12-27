@@ -1,5 +1,5 @@
 {
-int a2;
-read n;
-n = 345;
+int i,sum,j,k;
+sum=1;
+i=1;
 }

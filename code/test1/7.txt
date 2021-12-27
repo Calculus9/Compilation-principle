@@ -1,4 +1,7 @@
 {
-int n;
-n = 012345;
+sum=1;
+do
+{
+sum=sum*2;
+}while(sum<=10);
 }
