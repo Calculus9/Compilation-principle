@@ -4,8 +4,8 @@ int TESTmachine();
 
 int TESTmachine()
 {
-	int es=0,i,k=0,codecount,stack[1000],stacktop=0;
-	char Codein[300],code[1000][20],data[1000]; //用于接收输入文件名
+	int es=0,i,k=0,codecount,stack[1000],stacktop=0,data[1000];
+	char Codein[300],code[1000][20]; //用于接收输入文件名
 	int label[100];
 	char lno[4];
 	FILE *fin; //用于指向输入输出文件的指针
@@ -117,7 +117,6 @@ int TESTmachine()
 		// MOD
 		if (strcmp(code[i],"MOD")==0) 
 		{
-			cout << stack[stacktop-2] << " " << stack[stacktop-1] << endl;
 			stack[stacktop-2]=stack[stacktop-2]%stack[stacktop-1];
 			stacktop--;
 

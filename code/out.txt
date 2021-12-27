@@ -1,19 +1,38 @@
-        IN   
-        STI   0
-        IN   
-        STI   1
         LOADI 1
-        STO 2
+        STO 0
+        POP
+        LOADI 1
+        STO 1
+        POP
+        LOADI 2
+        STO 4
+        POP
+        LOADI 3
+        STO 3
         POP
 LABEL0:
-        LOAD 2
-        LOADI 0
-        NOTEQ
+        LOAD 3
+        LOADI 20
+        LE
         BRF LABEL1
+        BR LABEL2
+LABEL3:
+        LOAD 3
+        LOADI 1
+        ADD
+        STO 3
+        POP
+        BR LABEL0
+LABEL2:
         LOAD 0
         LOAD 1
-        MOD
+        ADD
         STO 2
+        POP
+        LOAD 4
+        LOAD 2
+        ADD
+        STO 4
         POP
         LOAD 1
         STO 0
@@ -21,8 +40,12 @@ LABEL0:
         LOAD 2
         STO 1
         POP
-        BR LABEL0
-LABEL1:
         LOAD 0
+        OUT
+        LOAD 1
+        OUT
+        BR LABEL3
+LABEL1:
+        LOAD 4
         OUT
         STOP

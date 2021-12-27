@@ -324,12 +324,12 @@ int while_stat()
 	FIN;
 	es=statement();
 	if (es>0) return(es);
-	if(strcmp(token,"}"))//判断是否'}'
-	{
-		es=2;
-		return(es);
-	}
-	FIN;
+	// if(strcmp(token,"}"))//判断是否'}'
+	// {
+	// 	es=2;
+	// 	return(es);
+	// }
+	// FIN;
 	fprintf(fout,"        BR LABEL%d\n",label1);//输出无条件转移指令
 	fprintf(fout,"LABEL%d:\n",label2);//设置label2标号
 	return(es);
@@ -383,12 +383,12 @@ int for_stat()
 	FIN;
 	es=statement();
 	if (es>0) return(es);
-	if(strcmp(token,"}"))//判断是否'}'
-	{
-		es=2;
-		return(es);
-	}
-	FIN;
+	// if(strcmp(token,"}"))//判断是否'}'
+	// {
+	// 	es=2;
+	// 	return(es);
+	// }
+	// FIN;
 	fprintf(fout,"        BR LABEL%d\n",label4);//输出无条件转移指令
 	fprintf(fout,"LABEL%d:\n",label2);//设置label2标号
 	return(es);
@@ -448,6 +448,12 @@ int compound_stat(){   //复合语句函数
 	int es=0;
 	FIN;
 	es=statement_list();
+	if(strcmp(token,"}"))//判断是否'}'
+	{
+		es=2;
+		return(es);
+	}
+	FIN;
 	return(es);
 }
 
