@@ -24,6 +24,8 @@ int do_while_stat();
 int name_def(char *name,int cnt);
 char token[20],token1[40];//token保存单词符号，token1保存单词值
 char Codeout[300]; //保存词法分析输出文件名
+int expression_cnt = 0;
+char expression_name[40];
 int line,line1;
 FILE *fp,*fout; //用于指向输入输出文件的指针
 struct Table{//定义符号表结构
@@ -117,6 +119,7 @@ int TESTparse()
 		case 23: printf("变量未声明!\n");break;
 		case 24: printf("数组设置的大小非法!\n");break;	
 	}
+
 	fclose(fp);
 	fclose(fout);
 	return(es);
@@ -136,11 +139,11 @@ int program()
    es=declaration_list();
    if (es>0) return(es);
    es=statement_list();
-   if (es>0) return(es);
    printf("\t\t\t符号表\n");
    printf("\t\t名字\t\t地址\n");
    for(i=0;i<vartablep;i++)
 	   printf("\t\t%s\t\t%d\n",vartable[i].name,vartable[i].address);
+   if (es>0) return(es);
    if(strcmp(token,"}"))//判断是否'}'
    {
 	   es=2;
@@ -324,12 +327,6 @@ int while_stat()
 	FIN;
 	es=statement();
 	if (es>0) return(es);
-	// if(strcmp(token,"}"))//判断是否'}'
-	// {
-	// 	es=2;
-	// 	return(es);
-	// }
-	// FIN;
 	fprintf(fout,"        BR LABEL%d\n",label1);//输出无条件转移指令
 	fprintf(fout,"LABEL%d:\n",label2);//设置label2标号
 	return(es);
@@ -480,12 +477,12 @@ int expression_stat()
 	}
 }
 
-//<expression>::=ID↑n@LOOK↓n↑d@ASSIGN=<bool_expr>@STO↓d |<bool_expr>
-// <expression>::= ID[NUM]↑n↑c@LOOK↓n↓c↑d@ASSIGN=<bool_expr>@STO↓d
+//<expression>::=ID[NUM]↑n@LOOK↓n↑d@ASSIGN=<bool_expr>@STO↓d |<bool_expr>
 int expression()
 {
 	int es=0,fileadd;
 	char token2[20],token3[40];
+	strcpy(expression_name, token1);
 	if (strcmp(token,"ID")==0)
 	{   
 		fileadd=ftell(fp);   //@ASSIGN记住当前文件位置
@@ -499,9 +496,35 @@ int expression()
 			FIN;
 			es=bool_expr();
 			if (es>0) return(es);
-			fprintf(fout,"        STO %d\n",address);
-
-		} else 
+			fprintf(fout,"        STO %d\n",address-expression_cnt);
+		}else if(strcmp(token2,"[")==0) 
+		{
+			FIN;
+			if(strcmp(token, "NUM")) return (es = 8);
+			expression_cnt = atoi(token1);
+			FIN;
+			if(strcmp(token, "]")) return (es = 9);
+			fileadd=ftell(fp);   //@ASSIGN记住当前文件位置
+			fscanf(fp,"%s %s %d\n", &token2,&token3,&line1);
+			printf("%s %s %d\n",token2,token3,line1);
+			if (strcmp(token2,"=")==0)  //'='
+			{
+				int address;
+				es=lookup(expression_name,&address);
+				if (es>0) return(es);
+				FIN;
+				es=bool_expr();
+				if (es>0) return(es);
+				fprintf(fout,"        STO %d\n",address-expression_cnt);
+			}else
+			{
+				fseek(fp,fileadd,0); //若非'='则文件指针回到'='前的标识符
+				printf("%s %s\n",token,token1);
+				es=bool_expr();
+				if (es>0) return(es);
+			}
+		} 
+		else 
 		{
 			fseek(fp,fileadd,0); //若非'='则文件指针回到'='前的标识符
 			printf("%s %s\n",token,token1);
@@ -592,13 +615,12 @@ int term()
 	return(es);
 }
 
-//< factor >::=(<additive_expr>)| ID|NUM
-//< factor >::=(< expression >)| ID↑n@LOOK↓n↑d@LOAD↓d |NUM↑i@LOADI↓i
+//< factor >::=(<additive_expr>)| ID |NUM | ID[NUM]
+//< factor >::=(< expression >)| ID↑n@LOOK↓n↑d@LOAD↓d |NUM↑i@LOADI↓i | ID[NUM]↑n↑i@LOOK↓n↑d@LOAD↓(d-i)
 
 int factor()
 {
 	int es=0;
-	
 	if (strcmp(token,"(")==0)  
 	{
 		FIN;
@@ -608,22 +630,34 @@ int factor()
 		FIN;
 	} else
 	{
-		
+
 		if (strcmp(token,"ID")==0)
 		{
+			FIN;
+			if(strcmp(token, "NUM")) return (es = 8);
+			expression_cnt = atoi(token1);
+			FIN;
+			if(strcmp(token, "]")) return (es = 9);
 			int address;
 			es=lookup(token1,&address);//查符号表，获取变量地址
 			if (es>0) return(es);//变量没声明
 			fprintf(fout,"        LOAD %d\n",address);
 			FIN;
 			return(es);
-		} 
-		if (strcmp(token,"NUM")==0)
+		}else if (strcmp(token,"NUM")==0)
 		{
 			fprintf(fout,"        LOADI %s\n",token1);
 			FIN;
 			return(es);
-		}else
+		}else if(strcmp(token,"]")==0) {
+			int address;
+			es=lookup(expression_name,&address);//查符号表，获取变量地址
+			if (es>0) return(es);//变量没声明
+			fprintf(fout,"        LOAD %d\n",address-expression_cnt);
+			FIN;
+			return(es);
+		}
+		else
 		{
 			es=7;//缺少操作数
 			return(es);
