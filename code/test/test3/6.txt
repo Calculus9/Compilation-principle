@@ -1,0 +1,12 @@
+{
+    int a,b,tmp;
+    read a;
+    read b;
+    tmp = 1;
+    while(tmp != 0) {
+        tmp = a % b;
+        a = b;
+        b = tmp;
+    }
+    write a;
+}

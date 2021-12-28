@@ -1,0 +1,6 @@
+{
+    int a,b;
+    a = 7;
+    b = 10;
+    if(a < b) write a;
+}

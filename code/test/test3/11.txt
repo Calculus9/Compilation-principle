@@ -1,0 +1,7 @@
+{
+    int i,j,m;
+    i = 3;
+    j = 5;
+    m = i + j;
+    write m;
+}
