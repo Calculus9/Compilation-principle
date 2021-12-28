@@ -1,0 +1,9 @@
+{
+int i;
+read i;
+int j;
+read j;
+if(i>j) j=i;
+for(i=1;i<j;j=j+1)
+{ sum=sum+i;
+write i;

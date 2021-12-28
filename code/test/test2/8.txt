@@ -1,0 +1,9 @@
+{
+int a,b,c,d;
+a = 3;
+b = 4;
+c = 5;
+if(a>0) a=10;
+if(a==0) a = 1;
+write a;
+}
