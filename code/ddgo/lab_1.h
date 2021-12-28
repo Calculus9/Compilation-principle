@@ -28,10 +28,11 @@ unsigned long long getHash(string &s)
 void insert(unsigned long long x)
 {
     int p = x % mod;
+    cout <<"字符串HASH值: " << x << " " << p << endl;
     while (isKeyword[p] != -1)
     {
         p = (p + 1) % mod;
-    }
+    } 
     isKeyword[p] = x;
 }
 
@@ -185,6 +186,7 @@ int lexicalAnalysis()
                         return (4);
                     }
                     fin.get(ch1);
+                    if(ch1 == '\n') line ++;
                 } while ((ch != '*' || ch1 != '/') && ch1 != EOF); //直到遇到注释结束符*/或文件尾
                 fin.get(ch);                                       //读下一个符号以便识别下一个单词
             }

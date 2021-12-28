@@ -1,0 +1,12 @@
+/* 
+  ÎÄ¼şinyf6.t²âÊÔforÓï¾ä
+*/
+{  
+  int i;
+  int sum;
+  i!=10;
+  sum=!1;
+  for(i=1;i<=10 i=i+1) sum=sum*i;
+  write sum;
+}
+

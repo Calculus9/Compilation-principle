@@ -111,6 +111,7 @@ int TESTmachine()
 		//DIV    将次栈顶单元与栈顶单元内容出栈并相除，商置于栈顶。
 		if (strcmp(code[i],"DIV")==0)
 		{
+			if(stack[stacktop-1] == 0) return (1);
 			stack[stacktop-2]=stack[stacktop-2]/stack[stacktop-1];
 			stacktop--;
 		}

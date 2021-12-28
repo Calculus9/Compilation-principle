@@ -225,7 +225,7 @@ int statement()
 	if (es==0 && strcmp(token,"int")==0) es=declaration_list();//<int语句>
 	if (es==0 && strcmp(token,"write")==0) es=write_stat();//<write语句>
 	if (es==0 && strcmp(token,"{")==0) es=compound_stat();//<复合语句>
-	if (es==0 && (strcmp(token,"ID")==0||strcmp(token,"NUM")==0||strcmp(token,"(")==0)) es=expression_stat();//<表达式语句>
+	if (es==0 && (strcmp(token,"ID")==0||strcmp(token,"NUM")==0||strcmp(token,"(")==0 || strcmp(token,";")==0)) es=expression_stat();//<表达式语句>
 	return(es);
 }
 
@@ -283,7 +283,7 @@ int do_while_stat()
 	FIN;
 	es = statement();
 	if (es) return es;
-	FIN;
+	// FIN;
 	if (strcmp(token, "while") == 0) // while部分处理
 	{
 		FIN;
@@ -633,11 +633,13 @@ int factor()
 
 		if (strcmp(token,"ID")==0)
 		{
-			FIN;
-			if(strcmp(token, "NUM")) return (es = 8);
-			expression_cnt = atoi(token1);
-			FIN;
-			if(strcmp(token, "]")) return (es = 9);
+			if(strcmp(token, "[") == 0) {
+				FIN;
+				if(strcmp(token, "NUM")) return (es = 8);
+				expression_cnt = atoi(token1);
+				FIN;
+				if(strcmp(token, "]")) return (es = 9);
+			}
 			int address;
 			es=lookup(token1,&address);//查符号表，获取变量地址
 			if (es>0) return(es);//变量没声明

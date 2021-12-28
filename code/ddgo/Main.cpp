@@ -17,7 +17,17 @@ int main()
         else {
             cout<<"语法分析成功"<<endl;
             es = TESTmachine();
-            if(es > 0) cout << "模拟机转换失败" <<endl;
+            if(es > 0) {
+                cout << "模拟机转换失败" <<endl;
+                switch (es)
+                {
+                case 1:
+                    cout << "除0" <<endl;
+                    break;
+                default:
+                    break;
+                }
+            }
             else cout << "模拟机转换成功" <<endl; 
         }
     }
