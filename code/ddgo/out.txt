@@ -4,6 +4,6 @@
         LOADI 2
         STO 8
         POP
-        LOAD 7
-        OUT
-        STOP
+        LOAD 9
+        STO 7
+        POP
